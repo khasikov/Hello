@@ -3,20 +3,14 @@ package com.khasikov.app;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.khasikov.app.objectdata.Encumbrance;
 import com.khasikov.app.objectdata.ObjectToId;
 import com.khasikov.app.objectdata.RightEncumbranceObject;
 import com.khasikov.app.objectdata.RootObject;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -147,15 +141,17 @@ public class App {
             cadNumber = "";
 
             // Убираем лидирующие нули в каждом элементе массива номеров преобразованием к Integer и обратно к String
-            Integer intCadNumb=null;
+            Integer intCadNumb;
+            StringBuilder trimCadNumberBuilder = new StringBuilder(trimCadNumber);
             for (int i = 0; i<arrayCadNumber.length; i++) {
                 intCadNumb=Integer.parseInt(arrayCadNumber[i]);
                 if (i < arrayCadNumber.length - 1) {
-                    trimCadNumber += String.valueOf(intCadNumb) + ":";
+                    trimCadNumberBuilder.append(String.valueOf(intCadNumb)).append(":");
                 }else {
-                    trimCadNumber += String.valueOf(intCadNumb);
+                    trimCadNumberBuilder.append(String.valueOf(intCadNumb));
                 }
             }
+            trimCadNumber = trimCadNumberBuilder.toString();
 
             // Собираем кадастровый номер без лидирующих нулей
             cadNumber += trimCadNumber;
@@ -173,9 +169,8 @@ public class App {
         SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-mm-dd");
         SimpleDateFormat formatter2 = new SimpleDateFormat("dd.mm.yyyy");
         Date date1 = formatter1.parse(date);
-        String date2 = formatter2.format(date1);
 
-        return date2;
+            return formatter2.format(date1);
         }
         else return "";
     }
